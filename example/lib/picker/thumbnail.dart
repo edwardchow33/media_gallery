@@ -6,9 +6,11 @@ import 'package:media_gallery/media_gallery.dart';
 
 class MediaThumbnailImage extends StatelessWidget {
   final Media media;
+  final bool highQuality;
 
   const MediaThumbnailImage({
     @required this.media,
+    this.highQuality
   });
 
   @override
@@ -22,6 +24,7 @@ class MediaThumbnailImage extends StatelessWidget {
             placeholder: MemoryImage(kTransparentImage),
             image: MediaThumbnailProvider(
               media: media,
+              highQuality: highQuality
             ),
           ),
         ),

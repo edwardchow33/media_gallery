@@ -131,7 +131,7 @@ class _MediaGridState extends State<MediaGrid>
     super.build(context);
     final mediaQuery = MediaQuery.of(context);
     final allMedias = pages.expand((x) => x.items);
-    final crossAxisCount = (mediaQuery.size.width / 128).ceil();
+    final crossAxisCount = 4;
     final selection = MediaPickerSelection.of(context);
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
@@ -153,6 +153,7 @@ class _MediaGridState extends State<MediaGrid>
                 child: Selectable(
                   isSelected: selection.contains(x),
                   child: MediaThumbnailImage(
+                    highQuality: true,
                     media: x,
                   ),
                 ),

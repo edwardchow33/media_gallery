@@ -212,23 +212,24 @@ public class SwiftMediaGalleryPlugin: NSObject, FlutterPlugin {
             let asset: PHAsset = assets[0];
             
             let options = PHImageRequestOptions()
-            options.deliveryMode = (highQuality ?? false) ?  PHImageRequestOptionsDeliveryMode.highQualityFormat : PHImageRequestOptionsDeliveryMode.fastFormat
-            options.isSynchronous = false
+            options.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic
+            options.isSynchronous = true
             options.isNetworkAccessAllowed = true
             options.version = .current
 
-            let imageSize = CGSize(width: width?.intValue ?? 128, height: height?.intValue ?? 128)
-            manager.requestImage(
-               for: asset,
-               targetSize: CGSize(width: imageSize.width *  UIScreen.main.scale, height: imageSize.height *  UIScreen.main.scale),
-               contentMode: PHImageContentMode.aspectFill,
-               options: options,
-               resultHandler: {
-                   (image: UIImage?, info) in
-                let bytes = image!.jpegData(compressionQuality: CGFloat(70));
-                completion(bytes, nil);
-           })
-
+            let imageSize = CGSize(width: width?.intValue ?? 40, height: height?.intValue ?? 40)
+            DispatchQueue.global(qos: .background).async {
+                manager.requestImage(
+                    for: asset,
+                    targetSize: CGSize(width: imageSize.width *  UIScreen.main.scale, height: imageSize.height *  UIScreen.main.scale),
+                    contentMode: PHImageContentMode.aspectFill,
+                    options: options,
+                    resultHandler: {
+                        (image: UIImage?, info) in
+                        let bytes = image!.jpegData(compressionQuality: CGFloat(50));
+                        completion(bytes, nil);
+                })
+            }
         }
     }
     
